@@ -1,0 +1,39 @@
+models:
+  Term:
+    name: string
+    slug: string unique
+    taxonomy: string
+
+  Shop:
+    owner_id: id foreign:users
+    title: string
+    slug: string unique
+    description: string
+    excerpt: string
+    status: string
+    type: string
+    comment_status: staring
+    ping_status: string
+
+  ShopMeta:
+    shop_id: id foreign:shops
+    meta_key: string
+    meta_value: string
+
+  Document:
+   title: string
+   path: string unique
+   mime_type: string
+   size: integer
+
+  UserMeta:
+    user_id: id foreign:users
+    meta_key: string
+    meta_value: string 
+
+  ShopTerm:
+    shop_id: id foreign:shops
+    term_id: id foreign:terms
+
+controllers:
+  # ...

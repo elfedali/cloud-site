@@ -1,0 +1,39 @@
+// Body
+@import url("https://fonts.googleapis.com/css2?family=Playfair+Display&display=swap");
+// Typography
+$green: #a4c4b6;
+$blue: #3957d7;
+$red: #ee667e;
+$yellow: #f3c973;
+$purple: #a58ce1;
+$orange: #f27e6b;
+$font-size-base: 1rem;
+$line-height-base: 1.6;
+$primary: black;
+$border-radius: 0.5rem;
+//$input-padding-y: 0.6rem;
+// body
+
+//$body-color: #3f454f;
+
+// input
+$input-bg: #f5f5f5;
+$input-btn-focus-box-shadow: none;
+
+$link-color: $blue;
+// Bootstrap
+@import "bootstrap/scss/bootstrap";
+
+label {
+    color: $gray-600;
+    margin-bottom: 0.5rem;
+    // text-transform: uppercase;
+}
+
+.auth-wrapper {
+    h1 {
+        font-family: "Playfair Display", serif;
+        font-size: 2.5rem;
+        margin-bottom: 1rem;
+    }
+}

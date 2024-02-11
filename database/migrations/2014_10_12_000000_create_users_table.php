@@ -17,6 +17,12 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
+            $table->enum('role', [
+                \App\Models\User::ROLE_USER,
+                \App\Models\User::ROLE_COMERCIAL,
+                \App\Models\User::ROLE_ADMIN,
+                \App\Models\User::ROLE_SUPER_ADMIN,
+            ])->default(\App\Models\User::ROLE_USER);
             $table->rememberToken();
             $table->timestamps();
         });
