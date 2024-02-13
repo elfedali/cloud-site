@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 
@@ -18,22 +20,128 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/hello', [\App\Http\Controllers\HelloController::class, 'index'])->name('hello');
+// groupe admin
+Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function () {
 
-// term
-Route::match(['get'], '/user/all', [\App\Http\Controllers\HelloController::class, 'index']);
+    Route::get('/', function () {
+        return view(
+            'admin.dashboard.index',
+            [
+                'users' => \App\Models\User::count(),
+                'terms' => \App\Models\Term::count(),
+                'shops' => \App\Models\Shop::count(),
+                'medias' => \App\Models\Document::count(),
+                'kitchen_terms' => \App\Models\Term::where('taxonomy', 'kitchen')->count(),
+                'service_terms' => \App\Models\Term::where('taxonomy', 'service')->count(),
+            ]
+        );
+    })->name('admin.dashboard');
 
-Route::match(['get'], '/user/{id}', [\App\Http\Controllers\HelloController::class, 'show'])
-    ->name('user.show')
-    ->where('id', '[0-9]+');
+    // media
+    Route::match(['get', 'post'], '/documents', function (Request $request) {
+        // if ($request->isMethod('post')) {
+        //     $data = $request->all();
+        //     $media = new \App\Models\Media();
+        //     $media->name = $data['name'];
+        //     $media->url = $data['url'];
+        //     $media->save();
+        //     return redirect()->route('admin.media')->with('success', 'Data saved');
+        // }
+        return view('admin.media.index', ['medias' => \App\Models\Document::all()]);
+    })->name('admin.media.index');
 
-Route::get('/user/{name?}', function ($name = 'abdessamad') {
-    return response()->json([
-        'name' => $name
-    ]);
-})
-    ->name('user')
-    ->where('name', '[a-zA-Z]+');
+
+    Route::match(['get'], "/terms", function (Request $request) {
+        $term_type = $request->input('term_type') ?? 'kitchen';
+        return view(
+            'admin.terms.index',
+            [
+                'terms' => \App\Models\Term::where('taxonomy', $term_type)->get(),
+                'term_type' => $term_type ?? 'kitchen',
+            ]
+        );
+    })->name('admin.terms.index');
+
+    Route::match(['get', 'post'], "/terms/create", function (Request $request) {
+        $term_type = $request->input('term_type') ?? 'kitchen';
+
+
+        if ($request->isMethod('post')) {
+            // validate request
+            $request->validate([
+                'name' => 'required|string|max:255',
+                'taxonomy' => 'required|string|max:255|in:kitchen,service',
+            ]);
+
+            $data = $request->all();
+
+            $term = new \App\Models\Term();
+            $term->name = $data['name'];
+            $term->taxonomy = $term_type;
+            $term->save();
+            return redirect()->route('admin.terms.index', ['term_type' => $term_type])->with('success', 'Data saved');
+        }
+        return view('admin..terms.term_create', ['term_type' => $term_type]);
+    })->name('admin.terms.create');
+
+    // edit update term
+    Route::match(['get', 'put', 'delete'], "/terms/{id}/edit", function (Request $request, $id) {
+        $term = \App\Models\Term::find($id);
+        if ($request->isMethod('put')) {
+            // validate request
+            $request->validate([
+                'name' => 'required|string|max:255',
+                // 'taxonomy' => 'required|string|max:255|in:kitchen,service',
+            ]);
+
+            $data = $request->all();
+            $term->name = $data['name'];
+            // $term->taxonomy = $data['taxonomy'];
+            $term->save();
+            return redirect()->route('admin.terms.index', ['term_type' => $term->taxonomy])->with('success', 'Data saved');
+        }
+        if ($request->isMethod('delete')) {
+            $term->delete();
+            return redirect()->route('admin.terms.index', ['term_type' => $term->taxonomy])->with('success', 'Data deleted');
+        }
+        return view('admin.terms.term_edit', ['term' => $term]);
+    })->name('admin.terms.edit');
+    // users
+    Route::match(['get', 'post'], '/users', function (Request $request) {
+        // if ($request->isMethod('post')) {
+        //     $data = $request->all();
+        //     $user = new \App\Models\User();
+        //     $user->name = $data['name'];
+        //     $user->email = $data['email'];
+        //     $user->password = bcrypt($data['password']);
+        //     $user->role = $data['role'];
+        //     $user->save();
+        //     return redirect()->route('admin.users')->with('success', 'Data saved');
+        // }
+        return view(
+            'admin.users.index',
+            [
+                'users' => \App\Models\User::all()
+            ]
+        );
+    })->name('admin.users.index');
+
+    // shops
+    Route::match(['get', 'post'], '/shops', function (Request $request) {
+        // if ($request->isMethod('post')) {
+        //     $data = $request->all();
+        //     $shop = new \App\Models\Shop();
+        //     $shop->name = $data['name'];
+        //     $shop->address = $data['address'];
+        //     $shop->phone = $data['phone'];
+        //     $shop->save();
+        //     return redirect()->route('admin.shops')->with('success', 'Data saved');
+        // }
+        return view('admin.shops.index', ['shops' => \App\Models\Shop::all()]);
+    })->name('admin.shops');
+});
+
+
 
 Auth::routes();
 

@@ -1,2 +1,27 @@
+created:
+    - database/factories/TermFactory.php
+    - database/factories/ShopFactory.php
+    - database/factories/ShopMetaFactory.php
+    - database/factories/DocumentFactory.php
+    - database/factories/UserMetaFactory.php
+    - database/factories/ShopTermFactory.php
+    - database/migrations/2024_02_11_001845_create_terms_table.php
+    - database/migrations/2024_02_11_001846_create_shops_table.php
+    - database/migrations/2024_02_11_001847_create_shop_metas_table.php
+    - database/migrations/2024_02_11_001848_create_documents_table.php
+    - database/migrations/2024_02_11_001849_create_user_metas_table.php
+    - database/migrations/2024_02_11_001850_create_shop_terms_table.php
+    - app/Models/Term.php
+    - app/Models/Shop.php
+    - app/Models/ShopMeta.php
+    - app/Models/Document.php
+    - app/Models/UserMeta.php
+    - app/Models/ShopTerm.php
 models:
     User: { name: string, email: string, email_verified_at: 'datetime nullable', password: string, role: 'string default:user', remember_token: 'string nullable' }
+    Term: { name: 'string:50', slug: 'string:100 unique', taxonomy: 'string:50' }
+    Shop: { owner_id: 'id foreign:users', title: string, slug: 'string unique', description: text, excerpt: text, status: 'string:10', type: 'string:10', comment_status: 'staring:10', ping_status: 'string:10' }
+    ShopMeta: { shop_id: 'id foreign:shops', meta_key: 'string:50', meta_value: text }
+    Document: { owner_id: 'id foreign:users', title: string, path: 'string unique', mime_type: string, size: integer }
+    UserMeta: { user_id: 'id foreign:users', meta_key: 'string:50', meta_value: text }
+    ShopTerm: { shop_id: 'id foreign:shops', term_id: 'id foreign:terms', weight: integer }
