@@ -2,6 +2,7 @@
 return [
     'welcome' => 'Bienvenue sur notre site web',
     'email_address' => 'Adresse e-mail',
+    'email' => 'Adresse e-mail',
     'password' => 'Mot de passe',
     'confirm_password' => 'Confirmez le mot de passe',
     'remember_me' => 'Se souvenir de moi',

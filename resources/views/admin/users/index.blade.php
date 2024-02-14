@@ -1,9 +1,7 @@
 @extends('admin.layouts.app')
 
 @section('content')
-    <h1>
-        Users
-    </h1>
+    @include('admin.users._top')
 
     <table class="table">
         <thead>
@@ -32,7 +30,9 @@
                         {{ $user->id }}
                     </td>
                     <td>
-                        {{ $user->name }}
+                        <a href="{{ route('admin.users.edit', ['id' => $user->id]) }}">
+                            {{ $user->name }}
+                        </a>
                     </td>
                     <td>
                         {{ $user->email }}

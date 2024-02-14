@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Route;
 
 
@@ -106,7 +107,32 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function () {
         }
         return view('admin.terms.term_edit', ['term' => $term]);
     })->name('admin.terms.edit');
-    // users
+
+    // user create
+    Route::match(['get', 'post'], '/users/create', function (Request $request) {
+        if ($request->isMethod('post')) {
+            // validate request
+            $request->validate([
+                'name' => 'required|string|max:255',
+                'email' => 'required|string|email|max:255|unique:users',
+                'password' => 'required|string|min:8',
+                'confirm_password' => 'required|string|min:8|same:password',
+                // 'role' => 'required|string|max:255|in:admin,user',
+            ]);
+            $data = $request->all();
+            $user = new \App\Models\User();
+            $user->name = $data['name'];
+            $user->email = $data['email'];
+            $user->password = Hash::make($data['password']);
+            $user->role = \App\Models\User::ROLE_USER; // default role
+            $user->save();
+            return redirect()->route('admin.users.index')->with('success', 'Data saved');
+        }
+        return view('admin.users.user_create');
+    })->name('admin.users.create');
+
+
+
     Route::match(['get', 'post'], '/users', function (Request $request) {
         // if ($request->isMethod('post')) {
         //     $data = $request->all();
@@ -125,6 +151,36 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function () {
             ]
         );
     })->name('admin.users.index');
+
+    // users edit update delete
+    Route::match(['get', 'put', 'delete'], '/users/{id}/edit', function (Request $request, $id) {
+        $user = \App\Models\User::find($id);
+        if ($request->isMethod('put')) {
+            // validate request
+            $request->validate([
+                'name' => 'required|string|max:255',
+                'email' => 'required|string|email|max:255',
+                // 'role' => 'required|string|max:255|in:admin,user',
+            ]);
+            $data = $request->all();
+            $user->name = $data['name'];
+            $user->email = $data['email'];
+            // $user->role = $data['role'];
+            //TODO: if email is changed, send email to user
+            // if ($user->email != $data['email']) {
+            //     $user->email_verified_at = null;
+            //     $user->sendEmailVerificationNotification();
+            // }
+            $user->save();
+            return redirect()->route('admin.users.index')->with('success', 'Data saved');
+        }
+        if ($request->isMethod('delete')) {
+            $user->delete();
+            return redirect()->route('admin.users.index')->with('success', 'Data deleted');
+        }
+        return view('admin.users.user_edit', ['user' => $user]);
+    })->name('admin.users.edit');
+
 
     // shops
     Route::match(['get', 'post'], '/shops', function (Request $request) {
