@@ -20,17 +20,17 @@ class ShopFactory extends Factory
      * Define the model's default state.
      */
     public function definition(): array
-    {
+    { // get random user
+        $user =  User::inRandomOrder()->first();
         return [
-            'owner_id' => User::factory(),
+            'owner_id' => $user->id,
             'title' => $this->faker->sentence(4),
-            'slug' => $this->faker->slug(),
             'description' => $this->faker->text(),
             'excerpt' => $this->faker->text(),
-            'status' => $this->faker->regexify('[A-Za-z0-9]{10}'),
-            'type' => $this->faker->regexify('[A-Za-z0-9]{10}'),
-            'comment_status' => $this->faker->word(),
-            'ping_status' => $this->faker->regexify('[A-Za-z0-9]{10}'),
+            'status' => $this->faker->randomElement(['draft', 'published']),
+            'type' => $this->faker->randomElement(['simple', 'variable']),
+            'comment_status' => $this->faker->randomElement(['open', 'closed']),
+            'ping_status' => $this->faker->randomElement(['open', 'closed']),
         ];
     }
 }

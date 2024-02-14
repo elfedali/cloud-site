@@ -27,7 +27,7 @@
                     <p class="card-text">
                         Number of shops : {{ $shops }}
                     </p>
-                    <a href="{{ route('admin.shops', ['post_type' => 'restaurant']) }}" class="btn btn-primary">Go to
+                    <a href="{{ route('admin.shops.index', ['post_type' => 'restaurant']) }}" class="btn btn-primary">Go to
                         Shops</a>
                 </div>
                 <!-- /.card-body -->

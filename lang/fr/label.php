@@ -48,6 +48,19 @@ return [
     'no' => 'Non',
     'id' => 'ID',
     'slug' => 'Slug',
+    'description' => 'Description',
+    'owner' => 'Propriétaire',
+    'title' => 'Titre',
+    'excerpt' => 'Extrait de la description',
+    'excerpt_help' => 'Extrait de la description, dans le cas où vous souhaitez afficher un extrait de la description',
+    'status' => 'Statut',
+    'comment_status' => 'Statut des commentaires',
+    'draft' => 'Brouillon',
+    'published' => 'Publié',
+    'open' => 'Ouvert',
+    'closed' => 'Fermé',
+    'ping_status' => 'Statut de ping',
+
 
 
 ];

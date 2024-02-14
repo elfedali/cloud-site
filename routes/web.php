@@ -184,17 +184,80 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function () {
 
     // shops
     Route::match(['get', 'post'], '/shops', function (Request $request) {
-        // if ($request->isMethod('post')) {
-        //     $data = $request->all();
-        //     $shop = new \App\Models\Shop();
-        //     $shop->name = $data['name'];
-        //     $shop->address = $data['address'];
-        //     $shop->phone = $data['phone'];
-        //     $shop->save();
-        //     return redirect()->route('admin.shops')->with('success', 'Data saved');
-        // }
-        return view('admin.shops.index', ['shops' => \App\Models\Shop::all()]);
-    })->name('admin.shops');
+        if ($request->isMethod('post')) {
+            $data = $request->all();
+            $shop = new \App\Models\Shop();
+            $shop->name = $data['name'];
+            $shop->address = $data['address'];
+            $shop->phone = $data['phone'];
+            $shop->save();
+            return redirect()->route('admin.shops.index')->with('success', 'Data saved');
+        }
+        return view(
+            'admin.shops.index',
+            [
+                'shops' => \App\Models\Shop::all()
+            ]
+        );
+    })->name('admin.shops.index');
+
+    // shops create
+    Route::match(['get', 'post'], '/shops/create', function (Request $request) {
+        if ($request->isMethod('post')) {
+            // validate request
+            $request->validate([
+                'name' => 'required|string|max:255',
+                'address' => 'required|string|max:255',
+                'phone' => 'required|string|max:255',
+            ]);
+            $data = $request->all();
+            $shop = new \App\Models\Shop();
+            $shop->name = $data['name'];
+            $shop->address = $data['address'];
+            $shop->phone = $data['phone'];
+            $shop->save();
+            return redirect()->route('admin.shops.index')->with('success', 'Data saved');
+        }
+        return view('admin.shops.shop_create');
+    })->name('admin.shops.create');
+
+    // shops edit update delete
+    Route::match(['get', 'put', 'delete'], '/shops/{id}/edit', function (Request $request, $id) {
+        $shop = \App\Models\Shop::find($id);
+        if ($request->isMethod('put')) {
+            // validate request
+            $request->validate([
+                'title' => 'required|string|max:255',
+                'description' => 'required|string',
+                'excerpt' => 'required|string',
+                'status' => 'required|in:draft,published',
+                //'type' => 'required|in:post,page',
+                'comment_status' => 'required|in:open,closed',
+                'ping_status' => 'required|in:open,closed',
+            ]);
+            $shop->update($request->all());
+            $shop->save();
+            return redirect()->route(
+                'admin.shops.edit',
+                ['id' => $shop->id]
+
+            )->with('success', 'Data saved');
+        }
+        if ($request->isMethod('delete')) {
+            $shop->delete();
+            return redirect()->route('admin.shops.index')->with('success', 'Data deleted');
+        }
+        return view(
+            'admin.shops.shop_edit',
+            [
+                'shop' => $shop,
+                'kitchen' => \App\Models\Term::where('taxonomy', 'kitchen')->get(),
+                'services' => \App\Models\Term::where('taxonomy', 'service')->get(),
+                'users' => \App\Models\User::all(),
+
+            ]
+        );
+    })->name('admin.shops.edit');
 });
 
 

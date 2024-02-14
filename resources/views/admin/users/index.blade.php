@@ -15,6 +15,10 @@
                 <th>
                     Email
                 </th>
+
+                <th>
+                    Role
+                </th>
                 <th>
                     Created At
                 </th>
@@ -34,8 +38,16 @@
                             {{ $user->name }}
                         </a>
                     </td>
+
                     <td>
                         {{ $user->email }}
+                    </td>
+                    <td>
+                        @if ($user->role == \App\Models\User::ROLE_ADMIN)
+                            * {{ $user->role }}
+                        @else
+                            {{ $user->role }}
+                        @endif
                     </td>
                     <td>
                         {{ $user->created_at }}

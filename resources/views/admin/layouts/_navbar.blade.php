@@ -41,8 +41,8 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link"
-                        href="{{ route('admin.shops', ['post_type' => 'restaurant']) }}">{{ __('label.restaurant') }}</a>
+                    <a class="nav-link @if (request()->routeIs('admin.shops.*')) active @endif"
+                        href="{{ route('admin.shops.index', ['post_type' => 'restaurant']) }}">{{ __('label.restaurant') }}</a>
                 </li>
             </ul>
 
