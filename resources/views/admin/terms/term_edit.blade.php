@@ -30,7 +30,7 @@
         @csrf
         @method('DELETE')
         <div class="mb-3">
-            <button type="submit" class="btn btn-danger"
+            <button type="submit" class="btn btn-link"
                 onclick="return confirm('Are you sure you want to delete this term?')">{{ __('label.delete') }}</button>
 
 

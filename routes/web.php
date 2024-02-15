@@ -222,8 +222,8 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function () {
     })->name('admin.shops.create');
 
     // shops edit update delete
-    Route::match(['get', 'put', 'delete'], '/shops/{id}/edit', function (Request $request, $id) {
-        $shop = \App\Models\Shop::find($id);
+    Route::match(['get', 'put', 'delete'], '/shops/{shop}/edit', function (Request $request, \App\Models\Shop $shop) {
+
         if ($request->isMethod('put')) {
             // validate request
             $request->validate([
@@ -239,7 +239,7 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function () {
             $shop->save();
             return redirect()->route(
                 'admin.shops.edit',
-                ['id' => $shop->id]
+                ['shop' => $shop]
 
             )->with('success', 'Data saved');
         }
@@ -258,6 +258,17 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function () {
             ]
         );
     })->name('admin.shops.edit');
+
+
+    // route shop menu
+    Route::match(['get', 'post'], '/shops/{shop}/menu', [\App\Http\Controllers\Shop\ShopMenuController::class, 'shopMenu'])->name('admin.shops.menu');
+    Route::delete('/shops/{shop}/menu/{menu}/destroy', [\App\Http\Controllers\Shop\ShopMenuController::class, 'destroy'])->name('admin.shops.menu.destroy');
+    Route::put('/shops/{shop}/menu/{menu}/update', [\App\Http\Controllers\Shop\ShopMenuController::class, 'update'])->name('admin.shops.menu.update');
+
+    // route shop menu item
+    Route::put('/shops/{shop}/menu/{menu}/addItem', [\App\Http\Controllers\Shop\ShopMenuItemController::class, 'addItem'])->name('admin.shops.menu.addItem');
+    Route::put('/shops/{shop}/menu/{menu}/item/{item}/update', [\App\Http\Controllers\Shop\ShopMenuItemController::class, 'updateMenuItem'])->name('admin.shops.menu.item.update');
+    Route::delete('/shops/{shop}/menu/{menu}/item/{item}/destroy', [\App\Http\Controllers\Shop\ShopMenuItemController::class, 'destroyMenuItem'])->name('admin.shops.menu.item.destroy');
 });
 
 

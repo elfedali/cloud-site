@@ -13,6 +13,7 @@ class Shop extends Model
     use HasFactory;
     use HasSlug;
 
+    protected $table = 'shops';
     /**
      * The attributes that are mass assignable.
      *
@@ -28,6 +29,8 @@ class Shop extends Model
         'type',
         'comment_status',
         'ping_status',
+        'position',
+        'is_active',
     ];
 
     /**
@@ -50,5 +53,16 @@ class Shop extends Model
     public function owner(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+
+    public function getShopMenus()
+    {
+        $menus = Menu::where('owner_id', $this->owner_id)
+            ->where('type', 'menu')
+            ->orderBy('position', 'asc')
+            ->get();
+
+        return $menus;
     }
 }

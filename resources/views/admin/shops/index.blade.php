@@ -32,7 +32,7 @@
                         {{ $shop->id }}
                     </td>
                     <td>
-                        <a href="{{ route('admin.shops.edit', ['id' => $shop->id]) }}">
+                        <a href="{{ route('admin.shops.edit', ['shop' => $shop->id]) }}">
                             {{ $shop->title }}
                         </a>
                     </td>

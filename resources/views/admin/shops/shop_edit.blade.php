@@ -1,11 +1,13 @@
 @extends('admin.layouts.app')
 
 @section('content')
+    @include('admin.shops._nav')
     <h1>
         Edit Shop <u>{{ $shop->title }}</u>
     </h1>
 
-    <form action="{{ route('admin.shops.edit', ['id' => $shop->id]) }}" method="post">
+
+    <form action="{{ route('admin.shops.edit', ['shop' => $shop->id]) }}" method="post">
         @csrf
         @method('put')
 
@@ -98,11 +100,10 @@
     </form>
     <!-- /form -->
     {{-- delete  --}}
-    <form action="{{ route('admin.shops.edit', ['id' => $shop->id]) }}" method="post">
+    <form action="{{ route('admin.shops.edit', ['shop' => $shop->id]) }}" method="post">
         @csrf
         @method('delete')
-        <button type="submit" class="btn btn-danger"
-            onclick="return confirm('Are you sure you want to delete this shop?')">
+        <button type="submit" class="btn btn-link" onclick="return confirm('Are you sure you want to delete this shop?')">
             {{ __('label.delete') }}
         </button>
     </form>

@@ -60,7 +60,13 @@ return [
     'open' => 'Ouvert',
     'closed' => 'Fermé',
     'ping_status' => 'Statut de ping',
+    'price' => 'Prix',
+    'add_item' => 'Ajouter un élément',
 
 
+    'menu_name' => 'Nom du menu',
+    'menu_help' => 'Ajoutez une section du menu',
 
+
+    'position' => 'Position',
 ];

@@ -18,12 +18,14 @@ return new class extends Migration
             $table->foreignId('owner_id')->constrained('users');
             $table->string('title');
             $table->string('slug')->unique();
-            $table->text('description');
-            $table->text('excerpt');
+            $table->text('description')->nullable();
+            $table->text('excerpt')->nullable();
             $table->string('status', 10);
             $table->string('type', 10);
             $table->string('comment_status');
             $table->string('ping_status', 10);
+            $table->integer('position')->default(0);
+            $table->boolean('is_active')->default(true);
             $table->timestamps();
         });
 
