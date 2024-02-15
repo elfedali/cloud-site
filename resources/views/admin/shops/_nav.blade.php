@@ -17,7 +17,10 @@
         </a>
     </li>
     <li class="nav-item">
-        <a class="nav-link" href="#">
+        <a class="nav-link @if (request()->routeIs('admin.shops.images')) active @endif"
+            href="{{ route('admin.shops.images', [
+                'shop' => $shop,
+            ]) }}">
             {{ __('label.images') }}
         </a>
     </li>

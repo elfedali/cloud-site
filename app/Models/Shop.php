@@ -5,13 +5,16 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Spatie\MediaLibrary\HasMedia;
 use Spatie\Sluggable\HasSlug;
 use Spatie\Sluggable\SlugOptions;
 
-class Shop extends Model
+class Shop extends Model implements HasMedia
 {
     use HasFactory;
     use HasSlug;
+    use \Spatie\MediaLibrary\InteractsWithMedia;
+
 
     protected $table = 'shops';
     /**

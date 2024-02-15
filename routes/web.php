@@ -269,6 +269,13 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function () {
     Route::put('/shops/{shop}/menu/{menu}/addItem', [\App\Http\Controllers\Shop\ShopMenuItemController::class, 'addItem'])->name('admin.shops.menu.addItem');
     Route::put('/shops/{shop}/menu/{menu}/item/{item}/update', [\App\Http\Controllers\Shop\ShopMenuItemController::class, 'updateMenuItem'])->name('admin.shops.menu.item.update');
     Route::delete('/shops/{shop}/menu/{menu}/item/{item}/destroy', [\App\Http\Controllers\Shop\ShopMenuItemController::class, 'destroyMenuItem'])->name('admin.shops.menu.item.destroy');
+
+    // shop images
+    Route::match(['get', 'post'], '/shops/{shop}/images', [\App\Http\Controllers\Shop\ShopImageController::class, 'uploadImage'])->name('admin.shops.images');
+    Route::delete('/shops/{shop}/images/{image}/destroy', [\App\Http\Controllers\Shop\ShopImageController::class, 'destroyImage'])->name('admin.shops.images.destroy');
+
+    // shop seo
+    Route::match(['get', 'post'], '/shops/{shop}/seo', [\App\Http\Controllers\Shop\ShopSeoController::class, 'shopSeo'])->name('admin.shops.seo');
 });
 
 

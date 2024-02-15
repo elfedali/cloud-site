@@ -69,4 +69,5 @@ return [
 
 
     'position' => 'Position',
+    'image' => 'Image',
 ];

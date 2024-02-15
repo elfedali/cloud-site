@@ -7,6 +7,7 @@ return [
     'cancel' => 'Annuler',
     'delete' => 'Effacer',
     'edit' => 'Modifier',
+    'upload' => 'Télécharger',
 
     'add_item' => 'Ajouter un élément',
     'update_item' => 'Mettre à jour l\'élément',
