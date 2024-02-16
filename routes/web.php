@@ -276,6 +276,11 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function () {
 
     // shop seo
     Route::match(['get', 'post'], '/shops/{shop}/seo', [\App\Http\Controllers\Shop\ShopSeoController::class, 'shopSeo'])->name('admin.shops.seo');
+    Route::put('/shops/{shop}/seo/update', [\App\Http\Controllers\Shop\ShopSeoController::class, 'updateSeo'])->name('admin.shops.seo.update');
+
+    // shop opening hours
+    Route::match(['get', 'post'], '/shops/{shop}/opening-hours', [\App\Http\Controllers\Shop\ShopOpeningHourController::class, 'shopOpeningHours'])->name('admin.shops.opening-hours');
+    Route::put('/shops/{shop}/opening-hours/update', [\App\Http\Controllers\Shop\ShopOpeningHourController::class, 'updateOpeningHours'])->name('admin.shops.opening-hours.update');
 });
 
 

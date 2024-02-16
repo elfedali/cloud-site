@@ -25,13 +25,20 @@
         </a>
     </li>
     <li class="nav-item">
-        <a class="nav-link" href="#">
+        <a class="nav-link @if (request()->routeIs('admin.shops.seo')) active @endif"
+            href="{{ route('admin.shops.seo', [
+                'shop' => $shop,
+            ]) }}">
             {{ __('label.seo') }}
         </a>
     </li>
     <li class="nav-item">
-        <a class="nav-link" href="#">
+        <a class="nav-link @if (request()->routeIs('admin.shops.opening-hours')) active @endif""
+            href="{{ route('admin.shops.opening-hours', [
+                'shop' => $shop,
+            ]) }}">
             {{ __('label.opening_hours') }}
+
         </a>
     </li>
     <li class="nav-item">
