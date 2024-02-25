@@ -17,7 +17,7 @@
 
 <body>
     @include('admin.layouts._navbar')
-    <main class="container">
+    <main class="container mb-5">
         @include('admin.layouts._alerts')
         @yield('content')
     </main>

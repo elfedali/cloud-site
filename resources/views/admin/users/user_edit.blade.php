@@ -8,21 +8,7 @@
         @csrf
         @method('put')
 
-        <div class="mb-3">
-            <label for="name" class="form-label">
-                {{ __('label.name') }}
-            </label>
-            <input type="text" class="form-control" id="name" name="name" value="{{ $user->name }}">
-        </div>
-        <!-- /.mb-3 -->
-
-        <div class="mb-3">
-            <label for="email" class="form-label">
-                {{ __('label.email') }}
-            </label>
-            <input type="email" class="form-control" id="email" name="email" value="{{ $user->email }}">
-        </div>
-        <!-- /.mb-3 -->
+        @include('admin.users._form')
 
         <button type="submit" class="btn btn-primary">
             {{ __('label.update') }}

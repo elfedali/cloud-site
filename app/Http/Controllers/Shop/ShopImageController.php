@@ -19,7 +19,7 @@ class ShopImageController extends Controller
             //$imageName = time().'.'.$request->image->extension();  
             //$request->image->move(public_path('images'), $imageName);
 
-            return redirect()->route('admin.shops.images', $shop->id)->with('success', 'Image uploaded successfully.');
+            return redirect()->route('admin.shops.images', $shop->id)->with('success', __('label.image_uploaded'));
         }
 
         return view('admin.shops.images.images', [
@@ -31,6 +31,6 @@ class ShopImageController extends Controller
     function destroyImage(Shop $shop, $id)
     {
         $shop->getMedia('images')->find($id)->delete();
-        return redirect()->route('admin.shops.images', $shop->id)->with('success', 'Image deleted successfully.');
+        return redirect()->route('admin.shops.images', $shop->id)->with('success', __('label.image_deleted'));
     }
 }

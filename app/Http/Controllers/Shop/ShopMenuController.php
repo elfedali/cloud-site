@@ -61,7 +61,7 @@ class ShopMenuController extends Controller
         return redirect()->route(
             'admin.shops.menu',
             ['shop' => $shop->id]
-        )->with('success', 'Menu deleted successfully');
+        )->with('success', __('label.data_deleted'));
     }
 
     public function update(
@@ -81,6 +81,6 @@ class ShopMenuController extends Controller
         return redirect()->route(
             'admin.shops.menu',
             ['shop' => $shop->id]
-        )->with('success', 'Menu updated successfully');
+        )->with('success', __('label.data_updated'));
     }
 }

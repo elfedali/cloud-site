@@ -32,6 +32,36 @@
                 @enderror
             </div>
         </div>
+        {{-- username --}}
+        <div class="mb-3">
+            <label for="username">{{ __('label.username') }}</label>
+
+            <div>
+                <input id="username" type="text" class="form-control @error('username') is-invalid @enderror"
+                    name="username" value="{{ old('username') }}" required autocomplete="username">
+
+                @error('username')
+                    <span class="invalid-feedback" role="alert">
+                        {{ $message }}
+                    </span>
+                @enderror
+            </div>
+        </div>
+        {{-- phone --}}
+        <div class="mb-3">
+            <label for="phone">{{ __('label.phone') }}</label>
+
+            <div>
+                <input id="phone" type="text" class="form-control @error('phone') is-invalid @enderror"
+                    name="phone" value="{{ old('phone') }}" required autocomplete="phone">
+
+                @error('phone')
+                    <span class="invalid-feedback" role="alert">
+                        {{ $message }}
+                    </span>
+                @enderror
+            </div>
+        </div>
 
         <div class="mb-3">
             <label for="password">{{ __('label.password') }}</label>

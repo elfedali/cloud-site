@@ -13,7 +13,7 @@ class User extends Authenticatable
     use HasApiTokens, HasFactory, Notifiable;
 
     public const ROLE_USER = 'user';
-    public const ROLE_COMERCIAL = 'comercial';
+    public const ROLE_COMMERCIAL = 'commercial';
     public const ROLE_ADMIN = 'admin';
     public const ROLE_SUPER_ADMIN = 'super_admin';
 
@@ -31,6 +31,14 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'role',
+        'username',
+        'phone',
+        'address',
+        'city',
+        'zip',
+        'country',
+
     ];
 
     /**

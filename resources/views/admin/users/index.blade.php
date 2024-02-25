@@ -7,24 +7,28 @@
         <thead>
             <tr>
                 <th>
-                    ID
+                    {{ __('label.id') }}
                 </th>
                 <th>
-                    Name
+                    {{ __('label.name') }}
                 </th>
                 <th>
-                    Email
+                    {{ __('label.username') }}
+                </th>
+                <th>
+                    {{ __('label.email') }}
                 </th>
 
                 <th>
-                    Role
+                    {{ __('label.role') }}
                 </th>
                 <th>
-                    Created At
+                    {{ __('label.city') }}
                 </th>
                 <th>
-                    Updated At
+                    {{ __('label.created_at') }}
                 </th>
+
             </tr>
         </thead>
         <tbody>
@@ -38,6 +42,9 @@
                             {{ $user->name }}
                         </a>
                     </td>
+                    <td>
+                        {{ $user->username }}
+                    </td>
 
                     <td>
                         {{ $user->email }}
@@ -50,7 +57,7 @@
                         @endif
                     </td>
                     <td>
-                        {{ $user->created_at }}
+                        {{ $user->city }}
                     </td>
                     <td>
                         {{ $user->updated_at }}

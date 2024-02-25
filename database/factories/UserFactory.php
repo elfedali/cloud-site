@@ -31,10 +31,17 @@ class UserFactory extends Factory
             'remember_token' => Str::random(10),
             'role' => fake()->randomElement([
                 \App\Models\User::ROLE_USER,
-                \App\Models\User::ROLE_COMERCIAL,
+                \App\Models\User::ROLE_COMMERCIAL,
                 \App\Models\User::ROLE_ADMIN,
                 \App\Models\User::ROLE_SUPER_ADMIN,
             ]),
+            'username' => fake()->unique()->userName(),
+            'phone' => fake()->phoneNumber(),
+            'address' => fake()->address(),
+            'city' => fake()->city(),
+            'zip' => fake()->postcode(),
+            'country' => fake()->country(),
+
         ];
     }
 

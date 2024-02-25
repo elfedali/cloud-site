@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Spatie\MediaLibrary\HasMedia;
+use Spatie\OpeningHours\OpeningHours;
 use Spatie\Sluggable\HasSlug;
 use Spatie\Sluggable\SlugOptions;
 
@@ -16,6 +17,7 @@ class Shop extends Model implements HasMedia
     use HasSlug;
     use \Spatie\MediaLibrary\InteractsWithMedia;
 
+    const TYPE_RESTAURANT = 'restaurant';
 
     protected $table = 'shops';
     /**
@@ -98,5 +100,51 @@ class Shop extends Model implements HasMedia
         }
 
         return new Seo(null, null, null, null);
+    }
+
+    public function getOpeningHours()
+    {
+        $serializedData = $this->metas()->where('meta_key', 'opening_hours')->first();
+
+        if (!$serializedData) {
+            return null;
+        }
+        $data = unserialize($serializedData->meta_value);
+        return $data;
+        // Todo:: return opening hours
+        if ($data) {
+            $openingHoursData = [];
+            foreach ($data as $day => $schedule) {
+                $openingHours = [];
+
+                if (isset($schedule['is_open']) && $schedule['is_open'] === "true") {
+                    $openingTime = $schedule['open_time'];
+                    $closingTime = $schedule['close_time'];
+                    $openingHours[] = $openingTime . '-' . $closingTime;
+                } else {
+                    $openingHours = [];
+                }
+
+                $openingHoursData[$day] = $openingHours;
+            }
+            /**
+             * @var OpeningHours $openingHours
+             */
+            $openingHours = OpeningHours::create($openingHoursData);
+            return $openingHours;
+        }
+
+        return null;
+    }
+    /**
+     *  @var array $data
+     */
+    public function setOpeningHours(array $data)
+    {
+
+        $this->metas()->updateOrCreate(
+            ['meta_key' => 'opening_hours'],
+            ['meta_value' => (string) serialize($data)]
+        );
     }
 }

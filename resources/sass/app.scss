@@ -1,13 +1,14 @@
 // Body
 @import url("https://fonts.googleapis.com/css2?family=Playfair+Display&display=swap");
 // Typography
-$green: #a4c4b6;
-$blue: #3957d7;
-$red: #ee667e;
-$yellow: #f3c973;
-$purple: #a58ce1;
-$orange: #f27e6b;
-$font-size-base: 1rem;
+$green: #1abc9c;
+$blue: #3742fa;
+$red: #e74c3c;
+$yellow: #f1c40f;
+$purple: #9b59b6;
+$orange: #d35400;
+// 15px to rem
+$font-size-base: 0.9375rem;
 $line-height-base: 1.6;
 // $primary: black;
 $border-radius: 0.5rem;
@@ -17,7 +18,7 @@ $border-radius: 0.5rem;
 //$body-color: #3f454f;
 
 // input
-$input-bg: #f5f5f5;
+$input-bg: #f4f6f9;
 $input-btn-focus-box-shadow: none;
 
 $link-color: $blue;

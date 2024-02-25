@@ -28,7 +28,7 @@ class ShopFactory extends Factory
             'description' => $this->faker->text(),
             'excerpt' => $this->faker->text(),
             'status' => $this->faker->randomElement(['draft', 'published']),
-            'type' => $this->faker->randomElement(['simple', 'variable']),
+            'type' => Shop::TYPE_RESTAURANT,
             'comment_status' => $this->faker->randomElement(['open', 'closed']),
             'ping_status' => $this->faker->randomElement(['open', 'closed']),
         ];

@@ -159,7 +159,7 @@
                                         @method('DELETE')
 
                                         <div class="text-end">
-                                            <button type="submit" class="btn btn-link text-danger"
+                                            <button type="submit" class="btn btn-link text-danger p-0 m-0"
                                                 onclick="return confirm('Are you sure?')">
                                                 {{ __('button.delete') }}
                                             </button>

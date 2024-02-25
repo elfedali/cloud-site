@@ -36,7 +36,7 @@
             <div class="d-flex justify-content-between align-items-center">
                 <label class="mb-0" for="password">{{ __('label.password') }}</label>
                 @if (Route::has('password.request'))
-                    <a class="btn btn-link" href="{{ route('password.request') }}">
+                    <a class="btn btn-link text-danger m-0 p-0" href="{{ route('password.request') }}">
                         {{ __('label.forgot_password') }}
                     </a>
                 @endif

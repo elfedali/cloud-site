@@ -27,7 +27,7 @@ class ShopMenuItemController extends Controller
     {
 
         $menu->deleteItem($item);
-        return redirect()->route('admin.shops.menu', ['shop' => $shop->id])->with('success', 'Menu item deleted successfully');
+        return redirect()->route('admin.shops.menu', ['shop' => $shop->id])->with('success', __('label.data_saved'));
     }
 
     /**
@@ -55,6 +55,6 @@ class ShopMenuItemController extends Controller
         return redirect()->route(
             'admin.shops.menu',
             ['shop' => $shop->id]
-        )->with('success', 'Menu item updated successfully');
+        )->with('success', __('label.data_updated'));
     }
 }

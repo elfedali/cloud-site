@@ -18,6 +18,13 @@ class DatabaseSeeder extends Seeder
             'email' => 'webmaster@restoly.ma',
             'password' => bcrypt('password'),
             'role' => \App\Models\User::ROLE_SUPER_ADMIN,
+            'username' => 'webmaster',
+            'phone' => '0600000000',
+            'address' => 'Rue 1',
+            'city' => 'Casablanca',
+            'zip' => '20000',
+            'country' => 'Morocco',
+
         ]);
         \App\Models\User::factory(10)->create();
 

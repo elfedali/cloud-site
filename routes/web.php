@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Shop;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -30,7 +31,7 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function () {
             [
                 'users' => \App\Models\User::count(),
                 'terms' => \App\Models\Term::count(),
-                'shops' => \App\Models\Shop::count(),
+                'shops' => \App\Models\Shop::where('type', Shop::TYPE_RESTAURANT)->count(),
                 'medias' => \App\Models\Document::count(),
                 'kitchen_terms' => \App\Models\Term::where('taxonomy', 'kitchen')->count(),
                 'service_terms' => \App\Models\Term::where('taxonomy', 'service')->count(),
@@ -46,7 +47,7 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function () {
         //     $media->name = $data['name'];
         //     $media->url = $data['url'];
         //     $media->save();
-        //     return redirect()->route('admin.media')->with('success', 'Data saved');
+        //     return redirect()->route('admin.media')->with('success', __('label.data_saved'));
         // }
         return view('admin.media.index', ['medias' => \App\Models\Document::all()]);
     })->name('admin.media.index');
@@ -80,7 +81,7 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function () {
             $term->name = $data['name'];
             $term->taxonomy = $term_type;
             $term->save();
-            return redirect()->route('admin.terms.index', ['term_type' => $term_type])->with('success', 'Data saved');
+            return redirect()->route('admin.terms.index', ['term_type' => $term_type])->with('success', __('label.data_saved'));
         }
         return view('admin..terms.term_create', ['term_type' => $term_type]);
     })->name('admin.terms.create');
@@ -99,7 +100,7 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function () {
             $term->name = $data['name'];
             // $term->taxonomy = $data['taxonomy'];
             $term->save();
-            return redirect()->route('admin.terms.index', ['term_type' => $term->taxonomy])->with('success', 'Data saved');
+            return redirect()->route('admin.terms.index', ['term_type' => $term->taxonomy])->with('success', __('label.data_saved'));
         }
         if ($request->isMethod('delete')) {
             $term->delete();
@@ -116,34 +117,34 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function () {
                 'name' => 'required|string|max:255',
                 'email' => 'required|string|email|max:255|unique:users',
                 'password' => 'required|string|min:8',
-                'confirm_password' => 'required|string|min:8|same:password',
-                // 'role' => 'required|string|max:255|in:admin,user',
+                'password_confirmation' => 'required|string|min:8|same:password',
+                'role' => 'required|string|max:255|in:admin,user,commercial,super_admin,super_admin',
+                'phone' => 'required|string|max:255',
+                'address' => 'nullable|string|max:255',
+                'city' => 'nullable|string|max:255',
+                'zip' => 'nullable|string|max:255',
+                'country' => 'nullable|string|max:255',
+                'username' => 'required|string|max:255|unique:users',
+
+
             ]);
             $data = $request->all();
+            $data['role'] = $data['role'] ?? \App\Models\User::ROLE_USER;
+            $data['password'] = Hash::make($data['password']);
+
             $user = new \App\Models\User();
-            $user->name = $data['name'];
-            $user->email = $data['email'];
-            $user->password = Hash::make($data['password']);
-            $user->role = \App\Models\User::ROLE_USER; // default role
+            $user->fill($data);
+            $user->password = $data['password'];
+
+
             $user->save();
-            return redirect()->route('admin.users.index')->with('success', 'Data saved');
+            return redirect()->route('admin.users.edit', ['id' => $user->id])->with('success', __('label.data_saved'));
         }
         return view('admin.users.user_create');
     })->name('admin.users.create');
 
-
-
-    Route::match(['get', 'post'], '/users', function (Request $request) {
-        // if ($request->isMethod('post')) {
-        //     $data = $request->all();
-        //     $user = new \App\Models\User();
-        //     $user->name = $data['name'];
-        //     $user->email = $data['email'];
-        //     $user->password = bcrypt($data['password']);
-        //     $user->role = $data['role'];
-        //     $user->save();
-        //     return redirect()->route('admin.users')->with('success', 'Data saved');
-        // }
+    // Get all users
+    Route::get('/users', function (Request $request) {
         return view(
             'admin.users.index',
             [
@@ -160,19 +161,27 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function () {
             $request->validate([
                 'name' => 'required|string|max:255',
                 'email' => 'required|string|email|max:255',
-                // 'role' => 'required|string|max:255|in:admin,user',
+                'role' => 'required|string|max:255|in:admin,user,commercial,super_admin',
+                'password' => 'nullable|string|min:8',
+                'password_confirmation' => 'nullable|string|min:8|same:password',
+                'phone' => 'required|string|max:255',
+                'address' => 'nullable|string|max:255',
+                'city' => 'nullable|string|max:255',
+                'zip' => 'nullable|string|max:255',
+                'country' => 'nullable|string|max:255',
+                'username' => 'required|string|max:255',
+
             ]);
             $data = $request->all();
-            $user->name = $data['name'];
-            $user->email = $data['email'];
-            // $user->role = $data['role'];
-            //TODO: if email is changed, send email to user
-            // if ($user->email != $data['email']) {
-            //     $user->email_verified_at = null;
-            //     $user->sendEmailVerificationNotification();
-            // }
+
+
+            $user->update($data);
+            if (isset($data['password']) && $data['password'] != null) {
+                $user->password = Hash::make($data['password']);
+            }
+            // 
             $user->save();
-            return redirect()->route('admin.users.index')->with('success', 'Data saved');
+            return redirect()->route('admin.users.edit', ['id' => $user->id])->with('success', __('label.data_saved'));
         }
         if ($request->isMethod('delete')) {
             $user->delete();
@@ -191,12 +200,12 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function () {
             $shop->address = $data['address'];
             $shop->phone = $data['phone'];
             $shop->save();
-            return redirect()->route('admin.shops.index')->with('success', 'Data saved');
+            return redirect()->route('admin.shops.index')->with('success', __('label.data_saved'));
         }
         return view(
             'admin.shops.index',
             [
-                'shops' => \App\Models\Shop::all()
+                'shops' => \App\Models\Shop::where('type', Shop::TYPE_RESTAURANT)->get()
             ]
         );
     })->name('admin.shops.index');
@@ -216,14 +225,16 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function () {
             $shop->address = $data['address'];
             $shop->phone = $data['phone'];
             $shop->save();
-            return redirect()->route('admin.shops.index')->with('success', 'Data saved');
+            return redirect()->route('admin.shops.index')->with('success', __('label.data_saved'));
         }
         return view('admin.shops.shop_create');
     })->name('admin.shops.create');
 
     // shops edit update delete
     Route::match(['get', 'put', 'delete'], '/shops/{shop}/edit', function (Request $request, \App\Models\Shop $shop) {
-
+        if ($shop->type != Shop::TYPE_RESTAURANT) {
+            throw new \Exception('Invalid type');
+        }
         if ($request->isMethod('put')) {
             // validate request
             $request->validate([
@@ -241,7 +252,7 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function () {
                 'admin.shops.edit',
                 ['shop' => $shop]
 
-            )->with('success', 'Data saved');
+            )->with('success', __('label.data_saved'));
         }
         if ($request->isMethod('delete')) {
             $shop->delete();
@@ -280,7 +291,7 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function () {
 
     // shop opening hours
     Route::match(['get', 'post'], '/shops/{shop}/opening-hours', [\App\Http\Controllers\Shop\ShopOpeningHourController::class, 'shopOpeningHours'])->name('admin.shops.opening-hours');
-    Route::put('/shops/{shop}/opening-hours/update', [\App\Http\Controllers\Shop\ShopOpeningHourController::class, 'updateOpeningHours'])->name('admin.shops.opening-hours.update');
+    Route::put('/shops/{shop}/opening-hours/update', [\App\Http\Controllers\Shop\ShopOpeningHourController::class, 'updateOpeningHours'])->name('admin.shops.opening_hours.update');
 });
 
 

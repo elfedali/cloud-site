@@ -30,10 +30,10 @@
         @csrf
         @method('DELETE')
         <div class="mb-3">
-            <button type="submit" class="btn btn-link"
-                onclick="return confirm('Are you sure you want to delete this term?')">{{ __('label.delete') }}</button>
-
-
+            <button type="submit" class="btn btn-link text-danger p-0 m-0"
+                style="padding: 0; margin: 0;
+                onclick="return confirm('Are you sure you want to delete this
+                term?')">{{ __('label.delete') }}</button>
         </div>
     </form>
 @endsection

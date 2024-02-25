@@ -14,15 +14,23 @@ return new class extends Migration
         Schema::create('users', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->string('username')->unique()->nullable();
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->enum('role', [
                 \App\Models\User::ROLE_USER,
-                \App\Models\User::ROLE_COMERCIAL,
+                \App\Models\User::ROLE_COMMERCIAL,
                 \App\Models\User::ROLE_ADMIN,
                 \App\Models\User::ROLE_SUPER_ADMIN,
             ])->default(\App\Models\User::ROLE_USER);
+
+            $table->string('phone')->nullable();
+            $table->string('address')->nullable();
+            $table->string('city')->nullable();
+            $table->string('zip')->nullable();
+            $table->string('country')->nullable();
+
             $table->rememberToken();
             $table->timestamps();
         });

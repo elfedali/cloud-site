@@ -103,7 +103,8 @@
     <form action="{{ route('admin.shops.edit', ['shop' => $shop->id]) }}" method="post">
         @csrf
         @method('delete')
-        <button type="submit" class="btn btn-link" onclick="return confirm('Are you sure you want to delete this shop?')">
+        <button type="submit" class="btn btn-link text-danger p-0 m-0"
+            onclick="return confirm('Are you sure you want to delete this shop?')">
             {{ __('label.delete') }}
         </button>
     </form>

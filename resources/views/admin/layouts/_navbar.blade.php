@@ -15,12 +15,12 @@
                         {{ __('label.dashboard') }}
                     </a>
                 </li>
-                <li class="nav-item">
+                {{-- <li class="nav-item">
                     <a class="nav-link @if (request()->routeIs('admin.media.*')) active @endif"
                         href="{{ route('admin.media.index') }}">
                         {{ __('label.media') }}
                     </a>
-                </li>
+                </li> --}}
                 <li class="nav-item">
                     <a class="nav-link @if (request()->routeIs('admin.terms.*') and request()->term_type == 'kitchen') active @endif"
                         href="{{ route('admin.terms.index', ['term_type' => 'kitchen']) }}">
@@ -49,7 +49,7 @@
 
             <ul class="navbar-nav ms-auto">
                 <li class="nav-item">
-                    <a class="nav-link" href="#">
+                    <a class="nav-link" href="{{ route('admin.users.edit', ['id' => Auth::user()->id]) }}">
                         {{ Auth::user()->name }}
                     </a>
                 </li>

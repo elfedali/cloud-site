@@ -34,7 +34,7 @@
 
  @if ($errors->any())
      <div class="alert alert-danger alert-dismissible fade show" role="alert">
-         <strong>{{ __('label.error') }}</strong> {{ __('label.error-message') }}
+         <strong>{{ __('label.error') }}</strong>
          <ol class="mb-0">
              @foreach ($errors->all() as $error)
                  <li>{{ $error }}</li>

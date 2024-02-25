@@ -25,6 +25,6 @@ class ShopSeoController extends Controller
 
         $shop->setSeo($request->only('meta_title', 'meta_description', 'meta_keywords'));
 
-        return redirect()->route('admin.shops.seo', $shop->id)->with('success', 'SEO updated successfully');
+        return redirect()->route('admin.shops.seo', $shop->id)->with('success', __('label.data_saved'));
     }
 }
