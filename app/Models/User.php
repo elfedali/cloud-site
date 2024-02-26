@@ -38,6 +38,7 @@ class User extends Authenticatable
         'city',
         'zip',
         'country',
+        'createdby_id',
 
     ];
 
@@ -60,4 +61,14 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    public function shops()
+    {
+        return $this->hasMany(Shop::class, 'owner_id');
+    }
+
+    public function creator()
+    {
+        return $this->belongsTo(User::class, 'createdby_id');
+    }
 }

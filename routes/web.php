@@ -140,6 +140,7 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function () {
             $user = new \App\Models\User();
             $user->fill($data);
             $user->password = $data['password'];
+            $user->createdby_id = Auth::user()->id;
 
 
             $user->save();
@@ -200,6 +201,9 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function () {
             return redirect()->route('admin.users.edit', ['id' => $user->id])->with('success', __('label.data_saved'));
         }
         if ($request->isMethod('delete')) {
+            foreach ($user->shops as $shop) {
+                $shop->delete();
+            }
             $user->delete();
             return redirect()->route('admin.users.index')->with('success', 'Data deleted');
         }
@@ -235,6 +239,19 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function () {
                     'ping_status' => 'required|in:open,closed',
                     'kitchens' => 'nullable|array|exists:terms,id',
                     'services' => 'nullable|array|exists:terms,id',
+
+                    'email' => 'nullable|email',
+                    'phone' => 'nullable|string',
+                    'mobile' => 'nullable|string',
+                    'address' => 'nullable|string',
+                    'city' => 'nullable|string',
+                    'zipcode' => 'nullable|string',
+                    'country' => 'nullable|string',
+                    'tiktok' => 'nullable|string',
+                    'facebook' => 'nullable|string',
+                    'instagram' => 'nullable|string',
+                    'youtube' => 'nullable|string',
+
                 ]
 
             );
@@ -246,7 +263,7 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function () {
             $shop->save();
             $shop->terms()->sync(array_merge($data['kitchens'] ?? [], $data['services'] ?? []));
 
-            return redirect()->route('admin.shops.index')->with('success', __('label.data_saved'));
+            return redirect()->route('admin.shops.edit', ['shop' => $shop])->with('success', __('label.data_saved'));
         }
         return view(
             'admin.shops.shop_create',
@@ -276,6 +293,18 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function () {
                 'ping_status' => 'required|in:open,closed',
                 'kitchens' => 'nullable|array|exists:terms,id',
                 'services' => 'nullable|array|exists:terms,id',
+
+                'email' => 'nullable|email',
+                'phone' => 'nullable|string',
+                'mobile' => 'nullable|string',
+                'address' => 'nullable|string',
+                'city' => 'nullable|string',
+                'zipcode' => 'nullable|string',
+                'country' => 'nullable|string',
+                'tiktok' => 'nullable|string',
+                'facebook' => 'nullable|string',
+                'instagram' => 'nullable|string',
+                'youtube' => 'nullable|string',
             ]);
             $shop->update($request->all());
 

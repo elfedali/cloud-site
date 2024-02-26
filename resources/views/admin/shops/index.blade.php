@@ -2,7 +2,7 @@
 
 @section('content')
     <h1>
-        Shops List
+        {{ __('label.restaurants') }}
         <a href="{{ route('admin.shops.create') }}" class="btn btn-outline-primary">
             {{ __('label.create') }}
         </a>
@@ -23,11 +23,15 @@
                             {{ __('label.owner') }}
                         </th>
                         <th>
-                            {{ __('label.created_at') }}
+                            {{ __('label.creator') }}
                         </th>
                         <th>
-                            {{ __('label.updated_at') }}
+                            {{ __('label.phone') }}
                         </th>
+                        <th>
+                            {{ __('label.created_at') }}
+                        </th>
+
                     </tr>
                 </thead>
                 <tbody>
@@ -48,10 +52,19 @@
                                 </a>
                             </td>
                             <td>
-                                {{ $shop->created_at }}
+                                @if ($shop->creator)
+                                    <a href="{{ route('admin.users.edit', ['id' => $shop->creator->id]) }}">
+                                        {{ $shop->creator->id }} |
+                                        {{ $shop->creator->name }}
+                                    </a>
+                                @endif
+
                             </td>
                             <td>
-                                {{ $shop->updated_at }}
+                                {{ $shop->phone }}
+                            </td>
+                            <td>
+                                {{ $shop->created_at->diffForHumans() }}
                             </td>
                         </tr>
                     @endforeach

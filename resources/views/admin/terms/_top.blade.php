@@ -1,9 +1,9 @@
    <div class="d-flex align-items-center _justify-content-between">
        <h1 class="me-4">
            @if ($term_type == 'kitchen')
-               {{ __('label.kitchen') }}
+               {{ __('label.kitchens') }}
            @elseif($term_type == 'service')
-               {{ __('label.service') }}
+               {{ __('label.services') }}
            @else
                {{ $term_type }}
            @endif

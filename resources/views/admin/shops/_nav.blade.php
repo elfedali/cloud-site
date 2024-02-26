@@ -41,7 +41,7 @@
 
         </a>
     </li>
-    <li class="nav-item">
+    {{-- <li class="nav-item">
         <a class="nav-link @if (request()->routeIs('admin.shops.phone')) active @endif""
             href="{{ route('admin.shops.phone', [
                 'shop' => $shop,
@@ -49,7 +49,7 @@
             {{ __('label.phone') }}
 
         </a>
-    </li>
+    </li> --}}
     <li class="nav-item">
         <a class="nav-link" href="#">
             {{ __('label.comments') }}

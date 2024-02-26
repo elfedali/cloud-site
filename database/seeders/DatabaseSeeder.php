@@ -26,7 +26,35 @@ class DatabaseSeeder extends Seeder
             'country' => 'Morocco',
 
         ]);
-        \App\Models\User::factory(10)->create();
+
+        \App\Models\User::factory()->create([
+            'name' => 'commercial1',
+            'email' => 'commercial1@restoly.ma',
+            'password' => bcrypt('password'),
+            'role' => \App\Models\User::ROLE_COMMERCIAL,
+            'username' => 'commercial1',
+            'phone' => '0600000000',
+            'address' => 'Rue 1',
+            'city' => 'Casablanca',
+            'zip' => '20000',
+            'country' => 'Maroc',
+
+        ]);
+
+        \App\Models\User::factory()->create([
+            'name' => 'Mouad ben',
+            'email' => 'mouad.ben@restoly.ma',
+            'password' => bcrypt('password'),
+            'role' => \App\Models\User::ROLE_SUPER_ADMIN,
+            'username' => 'mouad.ben',
+            'phone' => '0600000000',
+            'address' => 'Rue 1',
+            'city' => 'Casablanca',
+            'zip' => '20000',
+            'country' => 'Maroc',
+
+        ]);
+        // \App\Models\User::factory(10)->create();
 
         // \App\Models\Term::factory(10)->create();
         $this->call(TermSeeder::class);

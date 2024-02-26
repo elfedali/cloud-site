@@ -38,6 +38,24 @@ class Shop extends Model implements HasMedia
         'ping_status',
         'position',
         'is_active',
+
+        // webiste
+        'website',
+        'email',
+        'phone',
+        'mobile',
+        'address',
+        'city',
+        'zipcode',
+        'country',
+
+        'tiktok',
+        'facebook',
+        'instagram',
+        'youtube',
+
+
+
         'createdby_id'
     ];
 

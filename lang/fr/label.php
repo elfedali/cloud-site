@@ -125,9 +125,9 @@ return [
     'reservations' => 'Réservations',
     'error' => 'Erreur',
     'success' => 'Succès',
-    'data_saved' => 'Données sauvegardées avec succès',
-    'data_deleted' => 'Données supprimées avec succès',
-    'data_updated' => 'Données mises à jour avec succès',
+    'data_saved' => 'données sauvegardées avec succès',
+    'data_deleted' => 'données supprimées avec succès',
+    'data_updated' => 'données mises à jour avec succès',
     'image_uploaded' => 'Image téléchargée avec succès',
     'image_deleted' => 'Image supprimée avec succès',
     'meta_title' => 'Titre Meta',
@@ -137,8 +137,15 @@ return [
     'add_new_restaurant' => 'Nouveau restaurant',
     'add_new_user' => 'Nouvel utilisateur',
     'edit_term' => 'Modifier le terme',
-
-
-
-
+    'country_help' => 'Le pays, Maroc par défaut',
+    'facebook' => 'Facebook',
+    'instagram' => 'Instagram',
+    'youtube' => 'Youtube',
+    'tiktok' => 'Tiktok',
+    'website' => 'Site web',
+    'zip' => 'Code postal',
+    'zipcode' => 'Code postal',
+    'mobile' => 'Mobile',
+    'list' => 'Liste',
+    'creator' => 'Créateur',
 ];

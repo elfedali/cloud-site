@@ -31,6 +31,8 @@ return new class extends Migration
             $table->string('zip')->nullable();
             $table->string('country')->nullable();
 
+            $table->foreignId('createdby_id')->nullable()->constrained('users');
+
             $table->rememberToken();
             $table->timestamps();
         });

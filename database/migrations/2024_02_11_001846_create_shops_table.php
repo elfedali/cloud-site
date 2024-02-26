@@ -26,8 +26,28 @@ return new class extends Migration
             $table->string('ping_status', 10);
             $table->integer('position')->default(0);
             $table->boolean('is_active')->default(true);
-            // created by user
-            $table->foreignId('createdby_id')->constrained('users');
+
+            // webiste
+            $table->string('website')->nullable();
+            $table->string('email')->nullable();
+            $table->string('phone')->nullable();
+            $table->string('mobile')->nullable();
+            // $table->string('fax')->nullable();
+            $table->string('address')->nullable();
+            $table->string('city')->nullable();
+            $table->string('zipcode')->nullable();
+            $table->string('country')->default('Maroc');
+
+            // tiktok
+            $table->string('tiktok')->nullable();
+            // facebook
+            $table->string('facebook')->nullable();
+            // instagram
+            $table->string('instagram')->nullable();
+            // youtube
+            $table->string('youtube')->nullable();
+
+            $table->foreignId('createdby_id')->nullable()->constrained('users');
             $table->timestamps();
         });
 
