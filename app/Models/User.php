@@ -19,6 +19,7 @@ class User extends Authenticatable
 
     public const ROLES = [
         self::ROLE_USER,
+        self::ROLE_COMMERCIAL,
         self::ROLE_ADMIN,
         self::ROLE_SUPER_ADMIN,
     ];
@@ -39,7 +40,6 @@ class User extends Authenticatable
         'zip',
         'country',
         'createdby_id',
-
     ];
 
     /**

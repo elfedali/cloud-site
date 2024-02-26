@@ -23,7 +23,7 @@ Route::get('/', function () {
 });
 
 // groupe admin
-Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function () {
+Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin.role']], function () {
 
     Route::get('/', function () {
         return view(
@@ -58,7 +58,7 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function () {
         return view(
             'admin.terms.index',
             [
-                'terms' => \App\Models\Term::where('taxonomy', $term_type)->get(),
+                'terms' => \App\Models\Term::where('taxonomy', $term_type)->orderBy('id', 'desc')->get(),
                 'term_type' => $term_type ?? 'kitchen',
             ]
         );
@@ -154,7 +154,7 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function () {
         return view(
             'admin.users.index',
             [
-                'users' => \App\Models\User::all()
+                'users' => \App\Models\User::all()->sortByDesc('id')
             ]
         );
     })->name('admin.users.index');
