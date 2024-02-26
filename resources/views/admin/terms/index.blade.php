@@ -2,40 +2,46 @@
 
 @section('content')
     @include('admin.terms._top')
+    <div class="card">
+        <div class="card-body">
 
-    <table class="table">
-        <thead>
+            <table class="table">
+                <thead>
 
-            <tr>
-                <th> {{ __('label.id') }}</th>
+                    <tr>
+                        <th> {{ __('label.id') }}</th>
 
-                <th>
-                    {{ __('label.name') }}
-                </th>
+                        <th>
+                            {{ __('label.name') }}
+                        </th>
 
-                <th>
-                    {{ __('label.slug') }}
-                </th>
-            </tr>
+                        <th>
+                            {{ __('label.slug') }}
+                        </th>
+                    </tr>
 
-        </thead>
+                </thead>
 
-        @foreach ($terms as $term)
-            <tr>
-                <td>
-                    {{ $term->id }}
-                </td>
+                @foreach ($terms as $term)
+                    <tr>
+                        <td>
+                            {{ $term->id }}
+                        </td>
 
-                <td>
-                    <a href="{{ url('/admin/terms/' . $term->id . '/edit') }}">
-                        {{ $term->name }}
-                    </a>
-                </td>
-                <td>
-                    {{ $term->slug }}
-                </td>
+                        <td>
+                            <a href="{{ url('/admin/terms/' . $term->id . '/edit') }}">
+                                {{ $term->name }}
+                            </a>
+                        </td>
+                        <td>
+                            {{ $term->slug }}
+                        </td>
 
-            </tr>
-        @endforeach
-    </table>
+                    </tr>
+                @endforeach
+            </table>
+        </div>
+        <!-- /.card-body -->
+    </div>
+    <!-- /.card -->
 @endsection

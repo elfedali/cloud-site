@@ -13,8 +13,9 @@ class Term extends Model
     use HasSlug;
 
     public const TYPE_SERVICE = 'service';
-    public const TYPE_CUISINE = 'cuisine';
+    public const TYPE_KITCHEN = 'kitchen';
     public const TYPE_FEATURE = 'feature';
+
     public const TYPE_TAG = 'tag';
     public const TYPE_CATEGORY = 'category';
     public const TYPE_LOCATION = 'location';
@@ -27,7 +28,7 @@ class Term extends Model
 
     public const TYPES = [
         self::TYPE_SERVICE,
-        self::TYPE_CUISINE,
+        self::TYPE_KITCHEN,
         self::TYPE_FEATURE,
         self::TYPE_TAG,
         self::TYPE_CATEGORY,
@@ -65,5 +66,11 @@ class Term extends Model
         return SlugOptions::create()
             ->generateSlugsFrom('name')
             ->saveSlugsTo('slug');
+    }
+
+    // shops
+    public function shops()
+    {
+        return $this->belongsToMany(Shop::class, 'shop_terms', 'term_id', 'shop_id');
     }
 }

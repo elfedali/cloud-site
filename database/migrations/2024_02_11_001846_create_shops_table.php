@@ -26,6 +26,8 @@ return new class extends Migration
             $table->string('ping_status', 10);
             $table->integer('position')->default(0);
             $table->boolean('is_active')->default(true);
+            // created by user
+            $table->foreignId('createdby_id')->constrained('users');
             $table->timestamps();
         });
 

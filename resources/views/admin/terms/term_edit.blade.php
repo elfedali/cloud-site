@@ -2,7 +2,8 @@
 
 @section('content')
     <h1>
-        Edit Term <u>{{ $term->name }}</u>
+        {{ __('label.edit_term') }}
+        <u>{{ $term->name }}</u>
     </h1>
 
     <form action="{{ route('admin.terms.edit', [

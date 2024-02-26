@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('shop_id')->constrained();
             $table->foreignId('term_id')->constrained();
-            $table->integer('weight');
+            // $table->integer('weight');
             $table->timestamps();
         });
 

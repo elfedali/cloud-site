@@ -10,6 +10,7 @@ class ShopTerm extends Model
 {
     use HasFactory;
 
+    protected $table = 'shop_terms';
     /**
      * The attributes that are mass assignable.
      *
@@ -18,7 +19,7 @@ class ShopTerm extends Model
     protected $fillable = [
         'shop_id',
         'term_id',
-        'weight',
+        // 'weight',
     ];
 
     /**

@@ -3,7 +3,7 @@
 @section('content')
     @include('admin.shops._nav')
     <h1>
-        Edit shop <u>{{ $shop->title }}</u> images
+        <u>{{ $shop->title }}</u>
     </h1>
 
 

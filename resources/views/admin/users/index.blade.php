@@ -60,7 +60,7 @@
                         {{ $user->city }}
                     </td>
                     <td>
-                        {{ $user->updated_at }}
+                        {{ $user->updated_at->diffForHumans() }}
                     </td>
                 </tr>
             @endforeach

@@ -6,6 +6,7 @@ use App\Models\Data\Seo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Facades\Auth;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\OpeningHours\OpeningHours;
 use Spatie\Sluggable\HasSlug;
@@ -37,6 +38,7 @@ class Shop extends Model implements HasMedia
         'ping_status',
         'position',
         'is_active',
+        'createdby_id'
     ];
 
     /**
@@ -146,5 +148,29 @@ class Shop extends Model implements HasMedia
             ['meta_key' => 'opening_hours'],
             ['meta_value' => (string) serialize($data)]
         );
+    }
+
+    public function creator()
+    {
+        return $this->belongsTo(User::class, 'createdby_id');
+    }
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($shop) {
+            if (Auth::check()) {
+                $shop->createdby_id = Auth::id();
+            } else {
+                $shop->createdby_id = 1;
+            }
+        });
+    }
+
+    // terms
+    public function terms()
+    {
+        return $this->belongsToMany(Term::class, 'shop_terms', 'shop_id', 'term_id');
     }
 }

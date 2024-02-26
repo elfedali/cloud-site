@@ -23,7 +23,7 @@ class TermFactory extends Factory
         $taxonomy = $this->faker->randomElement(['kitchen', 'service']);
         return [
             'name' => $this->faker->word(),
-            'slug' => $this->faker->slug(),
+            // 'slug' => $this->faker->slug(),
             'taxonomy' => $taxonomy,
         ];
     }

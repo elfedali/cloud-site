@@ -31,6 +31,7 @@ class ShopFactory extends Factory
             'type' => Shop::TYPE_RESTAURANT,
             'comment_status' => $this->faker->randomElement(['open', 'closed']),
             'ping_status' => $this->faker->randomElement(['open', 'closed']),
+            'createdby_id' => $user->id,
         ];
     }
 }

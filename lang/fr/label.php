@@ -133,5 +133,12 @@ return [
     'meta_title' => 'Titre Meta',
     'meta_description' => 'Description Meta',
     'meta_keywords' => 'Mots-clés Meta',
+    'see_more' => 'Voir plus',
+    'add_new_restaurant' => 'Nouveau restaurant',
+    'add_new_user' => 'Nouvel utilisateur',
+    'edit_term' => 'Modifier le terme',
+
+
+
 
 ];

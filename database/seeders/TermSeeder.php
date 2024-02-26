@@ -19,41 +19,27 @@ class TermSeeder extends Seeder
         ];
 
         $kitchenTermFr = [
-            'Marocain',
-            'Italien',
-            'Chinois',
-            'Indien',
-            'Thailandais',
-            'Mexicain',
-            'Français',
-            'Espagnol',
-            'Portugais',
-            'Allemand',
-            'Anglais',
-            'Américain',
-            'Libanais',
-            'Turc',
-            'Grec',
-            'Vietnamien',
-            'Coréen',
-            'Brésilien',
-            'Argentin',
-            'Africain',
-            'Méditerranéen',
-            'Fusion',
-            'Végétarien',
-            'Végan',
-
-
-            'Café',
-
-
+            'Méditerranéenne',
+            'Marocaine',
+            'Asiatique',
+            'Italienne',
+            'Française',
+            'Espagnole',
+            'Américaine',
+            'Mexicaine',
 
         ];
         foreach ($serviceTerms as $term) {
             \App\Models\Term::factory()->create([
                 'name' => $term,
-                'type' => \App\Models\Term::TYPE_SERVICE,
+                'taxonomy' => \App\Models\Term::TYPE_SERVICE,
+            ]);
+        }
+
+        foreach ($kitchenTermFr as $term) {
+            \App\Models\Term::factory()->create([
+                'name' => $term,
+                'taxonomy' => \App\Models\Term::TYPE_KITCHEN,
             ]);
         }
     }

@@ -10,6 +10,8 @@ class ShopMeta extends Model
 {
     use HasFactory;
 
+    public const META_PHONE_NUMBER = 'phone_number';
+
     /**
      * The attributes that are mass assignable.
      *

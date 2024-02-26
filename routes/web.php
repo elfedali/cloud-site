@@ -68,6 +68,8 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function () {
         $term_type = $request->input('term_type') ?? 'kitchen';
 
 
+
+
         if ($request->isMethod('post')) {
             // validate request
             $request->validate([
@@ -75,13 +77,16 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function () {
                 'taxonomy' => 'required|string|max:255|in:kitchen,service',
             ]);
 
+
+
             $data = $request->all();
 
             $term = new \App\Models\Term();
             $term->name = $data['name'];
-            $term->taxonomy = $term_type;
+            $term->taxonomy = $data['taxonomy'] ?? 'unknown';
             $term->save();
-            return redirect()->route('admin.terms.index', ['term_type' => $term_type])->with('success', __('label.data_saved'));
+
+            return redirect()->route('admin.terms.index', ['term_type' => $data['taxonomy']])->with('success', __('label.data_saved'));
         }
         return view('admin..terms.term_create', ['term_type' => $term_type]);
     })->name('admin.terms.create');
@@ -175,7 +180,18 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function () {
             $data = $request->all();
 
 
-            $user->update($data);
+            $user->update([
+                'name' => $data['name'],
+                'email' => $data['email'],
+                'role' => $data['role'],
+                'phone' => $data['phone'],
+                'address' => $data['address'],
+                'city' => $data['city'],
+                'zip' => $data['zip'],
+                'country' => $data['country'],
+                'username' => $data['username'],
+
+            ]);
             if (isset($data['password']) && $data['password'] != null) {
                 $user->password = Hash::make($data['password']);
             }
@@ -192,20 +208,15 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function () {
 
 
     // shops
-    Route::match(['get', 'post'], '/shops', function (Request $request) {
-        if ($request->isMethod('post')) {
-            $data = $request->all();
-            $shop = new \App\Models\Shop();
-            $shop->name = $data['name'];
-            $shop->address = $data['address'];
-            $shop->phone = $data['phone'];
-            $shop->save();
-            return redirect()->route('admin.shops.index')->with('success', __('label.data_saved'));
-        }
+    Route::get('/shops', function (Request $request) {
+
         return view(
             'admin.shops.index',
             [
-                'shops' => \App\Models\Shop::where('type', Shop::TYPE_RESTAURANT)->get()
+                'shops' => \App\Models\Shop::where('type', Shop::TYPE_RESTAURANT)
+                    ->with('owner')
+                    ->orderBy('id', 'desc')
+                    ->get()
             ]
         );
     })->name('admin.shops.index');
@@ -214,20 +225,38 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function () {
     Route::match(['get', 'post'], '/shops/create', function (Request $request) {
         if ($request->isMethod('post')) {
             // validate request
-            $request->validate([
-                'name' => 'required|string|max:255',
-                'address' => 'required|string|max:255',
-                'phone' => 'required|string|max:255',
-            ]);
+            $request->validate(
+                [
+                    'title' => 'required|string|max:255',
+                    'description' => 'required|string',
+                    'excerpt' => 'required|string',
+                    'status' => 'required|in:draft,published',
+                    'comment_status' => 'required|in:open,closed',
+                    'ping_status' => 'required|in:open,closed',
+                    'kitchens' => 'nullable|array|exists:terms,id',
+                    'services' => 'nullable|array|exists:terms,id',
+                ]
+
+            );
             $data = $request->all();
             $shop = new \App\Models\Shop();
-            $shop->name = $data['name'];
-            $shop->address = $data['address'];
-            $shop->phone = $data['phone'];
+            $shop->fill($data);
+            $shop->type = Shop::TYPE_RESTAURANT;
+            $shop->createdby_id = Auth::user()->id;
             $shop->save();
+            $shop->terms()->sync(array_merge($data['kitchens'] ?? [], $data['services'] ?? []));
+
             return redirect()->route('admin.shops.index')->with('success', __('label.data_saved'));
         }
-        return view('admin.shops.shop_create');
+        return view(
+            'admin.shops.shop_create',
+            [
+                'users' => \App\Models\User::all(),
+                'kitchens' => \App\Models\Term::where('taxonomy', 'kitchen')->get(),
+                'services' => \App\Models\Term::where('taxonomy', 'service')->get(),
+
+            ]
+        );
     })->name('admin.shops.create');
 
     // shops edit update delete
@@ -245,9 +274,13 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function () {
                 //'type' => 'required|in:post,page',
                 'comment_status' => 'required|in:open,closed',
                 'ping_status' => 'required|in:open,closed',
+                'kitchens' => 'nullable|array|exists:terms,id',
+                'services' => 'nullable|array|exists:terms,id',
             ]);
             $shop->update($request->all());
+
             $shop->save();
+            $shop->terms()->sync(array_merge($request->input('kitchens') ?? [], $request->input('services') ?? []));
             return redirect()->route(
                 'admin.shops.edit',
                 ['shop' => $shop]
@@ -262,7 +295,7 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function () {
             'admin.shops.shop_edit',
             [
                 'shop' => $shop,
-                'kitchen' => \App\Models\Term::where('taxonomy', 'kitchen')->get(),
+                'kitchens' => \App\Models\Term::where('taxonomy', 'kitchen')->get(),
                 'services' => \App\Models\Term::where('taxonomy', 'service')->get(),
                 'users' => \App\Models\User::all(),
 
@@ -292,6 +325,8 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function () {
     // shop opening hours
     Route::match(['get', 'post'], '/shops/{shop}/opening-hours', [\App\Http\Controllers\Shop\ShopOpeningHourController::class, 'shopOpeningHours'])->name('admin.shops.opening-hours');
     Route::put('/shops/{shop}/opening-hours/update', [\App\Http\Controllers\Shop\ShopOpeningHourController::class, 'updateOpeningHours'])->name('admin.shops.opening_hours.update');
+    //phone
+    Route::match(['get', 'post'], '/shops/{shop}/phone', [\App\Http\Controllers\Shop\ShopPhoneController::class, 'shopPhone'])->name('admin.shops.phone');
 });
 
 
